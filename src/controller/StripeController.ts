@@ -12,6 +12,7 @@ class ManagementStripe {
         phone: customer.phone,
         description: 'client or consultant from consultaneo',
       })
+      
       if (resp.id) return { code: 201, response: resp }
       else return { code: 400, response: resp }
     } catch (e) {

@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
     "start": "tsc && nodemon dist/app.js",
-    "production": "tsc && node dist/app.js"
+    "production": "tsc && node dist/app.js",
+    "run-ts": "ts-node-dev src/app.ts"
   },
   "keywords": [
     "stripe",
@@ -34,6 +35,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.4",
-    "prettier": "2.1.2"
+    "prettier": "2.1.2",
+    "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0"
   }
 }
