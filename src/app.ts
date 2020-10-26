@@ -7,8 +7,11 @@ import morgan from 'morgan'
 import cors from 'cors'
 require('dotenv').config()
 const listEndpoints = require('express-list-endpoints')
+import * as bodyParser from "body-parser"
 
 const app: express.Express = express()
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 app.use(helmet())
 app.use(cors())
 app.use(WebController)
