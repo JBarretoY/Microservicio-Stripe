@@ -52,3 +52,21 @@ export enum statusCode{
   UNAUTHORIZED = 401,
   BAD_REQUEST = 400
 }
+
+export type person = {
+  id: string,
+  params:personParams
+}
+
+export type personParams = {
+  first_name?: string,
+  last_name?: string,
+  email?: string,
+  customer?: string
+}
+
+export type linkStripe = {
+  account: string,
+  refresh_url: string,
+  return_url: string,
+}

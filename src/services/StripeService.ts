@@ -1,5 +1,5 @@
 import ManagementStripe from '../controller/StripeController'
-import { accountConect, charge, customer } from '../@types'
+import { accountConect, charge, customer, linkStripe, person } from '../@types'
 
 class StripeService {
   static async getBalanceFromStripe() {
@@ -11,11 +11,19 @@ class StripeService {
   }
 
   static async makeChargeStripe(params: charge) {
-    return await ManagementStripe.makeChargeStripe(params)
+    return await ManagementStripe.makePaymentStripe(params)
   }
 
   static async makeContactStripe(params: accountConect) {
     return await ManagementStripe.makeAccountStripeConnect(params)
+  }
+
+  static async cratePerson(params: person) {
+    return await ManagementStripe.createPersonFromContact(params)
+  }
+
+  static async createLink(params: linkStripe) {
+    return await ManagementStripe.createLink(params)
   }
 }
 

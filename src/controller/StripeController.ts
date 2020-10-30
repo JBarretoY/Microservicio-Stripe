@@ -1,5 +1,5 @@
 import { getObjectStripe } from '../util/valuesUtils'
-import { accountConect, charge, customer, response, statusCode } from '../@types'
+import { accountConect, charge, customer, linkStripe, person, response, statusCode } from '../@types'
 
 class ManagementStripe {
   static async createCustomerStripe(customer: customer): Promise<response> {
@@ -22,13 +22,12 @@ class ManagementStripe {
     }
   }
 
-  static async makeChargeStripe(charge: charge): Promise<response> {
+  static async makePaymentStripe(charge: charge): Promise<response> {
     try {
       const stripe = getObjectStripe()
       const resp = await stripe.charges.create({
         amount: charge.amount,
         currency: charge.currency,
-        ///customer: charge.customer,
         source: charge.source,
         description: charge.description,
       })
@@ -44,6 +43,7 @@ class ManagementStripe {
     try {
       const stripe = getObjectStripe()
       const resp = await stripe.balance.retrieve()
+
       if (resp.available) return { code: statusCode.ACEPTED, response: resp }
       else return { code: statusCode.BAD_REQUEST, response: resp }
     } catch (e) {
@@ -58,6 +58,7 @@ class ManagementStripe {
     try {
       const stripe = getObjectStripe()
       const respAccount = await stripe.accounts.create(params)
+
       if (respAccount.id) return { code: statusCode.CREATED, response: respAccount }
       return {code:statusCode.BAD_REQUEST,response: respAccount}
     } catch (e) {
@@ -65,6 +66,32 @@ class ManagementStripe {
         code: statusCode.INTERNAL_SERVER_ERROR,
         response:e.toString()
       }
+    }
+  }
+
+  static async createPersonFromContact(params: person): Promise<response> {
+    try {
+      const stripe = getObjectStripe()
+      const respPerson = await stripe.accounts.createPerson(params.id, params.params)
+      return (respPerson.id) ? { code: statusCode.CREATED, response: respPerson } : { code: statusCode.BAD_REQUEST,response: respPerson }
+    } catch (e) {
+      return {code:statusCode.INTERNAL_SERVER_ERROR, response: e.toString()}
+    }
+  }
+
+  static async createLink(params: linkStripe): Promise<response> {
+    try {
+      const stripe = getObjectStripe()
+      const respLink = await stripe.accountLinks.create({
+        refresh_url: params.refresh_url,
+        return_url: params.return_url,
+        type: 'account_onboarding',
+        account: params.account
+      })
+      
+      return respLink.url ? { code: statusCode.ACEPTED, response: respLink } : { code: statusCode.BAD_REQUEST, response: respLink }
+    } catch (e) {
+      return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
     }
   }
 }
