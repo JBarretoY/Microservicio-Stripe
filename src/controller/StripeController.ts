@@ -11,7 +11,7 @@ class ManagementStripe {
         phone: customer.phone || undefined,
         description: 'client or consultant from consultaneo',
       })
-      
+
       if (resp.id) return { code: statusCode.CREATED, response: resp }
       else return { code: statusCode.BAD_REQUEST, response: resp }
     } catch (e) {
@@ -88,9 +88,19 @@ class ManagementStripe {
         type: 'account_onboarding',
         account: params.account
       })
-      
+
       return respLink.url ? { code: statusCode.ACEPTED, response: respLink } : { code: statusCode.BAD_REQUEST, response: respLink }
     } catch (e) {
+      return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
+    }
+  }
+
+  static async getAllContacts(): Promise<response>{
+    try{
+      const stripe = getObjectStripe();
+      const contactLists = await stripe.accounts.list();
+      return contactLists.data.length > 0 ? {code: statusCode.ACEPTED,response:contactLists} : {code: statusCode.NOT_FOUND,response:'no contacts'}
+    }catch(e){
       return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
     }
   }

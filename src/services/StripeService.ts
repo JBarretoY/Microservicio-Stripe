@@ -25,6 +25,10 @@ class StripeService {
   static async createLink(params: linkStripe) {
     return await ManagementStripe.createLink(params)
   }
+
+  static async getAllContacts(){
+    return await ManagementStripe.getAllContacts()
+  }
 }
 
 export default StripeService

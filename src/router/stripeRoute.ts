@@ -18,7 +18,7 @@ route.post('/create-charge', async (req: Request, res: Response) => {
   return res
 })
 
-route.get('/get-balance', async (req: Request, res: Response) => {
+route.get('/get-balance', async (_req: Request, res: Response) => {
   const rs = await StripeService.getBalanceFromStripe()
   res.statusCode = rs.code
   res.json(rs)
@@ -41,6 +41,13 @@ route.post('/create-person', async (req: Request, res: Response) => {
 
 route.post('/create-link', async (req: Request, res: Response) => {
   const rs = await StripeService.createLink(<linkStripe>req.body)
+  res.statusCode = rs.code
+  res.json(rs)
+  return res
+})
+
+route.get('/get-contacts',async (req: Request,res: Response) => {
+  const rs = await StripeService.getAllContacts()
   res.statusCode = rs.code
   res.json(rs)
   return res
