@@ -1,5 +1,5 @@
 import { Request, Router, Response } from 'express'
-import { accountConect, charge, customer, linkStripe, person } from '../@types'
+import { accountConect, charge, customer, linkStripe, transfers } from '../@types'
 import StripeService from '../services/StripeService'
 
 const route: Router = Router()
@@ -26,14 +26,8 @@ route.get('/get-balance', async (_req: Request, res: Response) => {
 })
 
 route.post('/create-contact', async (req: Request, res: Response) => {
+  console.dir(req.body)
   const rs = await StripeService.makeContactStripe(<accountConect>req.body)
-  res.statusCode = rs.code
-  res.json(rs)
-  return res
-})
-
-route.post('/create-person', async (req: Request, res: Response) => {
-  const rs = await StripeService.cratePerson(<person>req.body)
   res.statusCode = rs.code
   res.json(rs)
   return res
@@ -48,6 +42,13 @@ route.post('/create-link', async (req: Request, res: Response) => {
 
 route.get('/get-contacts',async (req: Request,res: Response) => {
   const rs = await StripeService.getAllContacts()
+  res.statusCode = rs.code
+  res.json(rs)
+  return res
+})
+
+route.post('/make-transfers', async (req: Request,res: Response) => {
+  const rs = await StripeService.makeTransferToAccount(<transfers>req.body)
   res.statusCode = rs.code
   res.json(rs)
   return res

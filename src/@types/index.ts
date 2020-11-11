@@ -54,20 +54,15 @@ export enum statusCode{
   NOT_FOUND = 404
 }
 
-export type person = {
-  id: string,
-  params:personParams
-}
-
-export type personParams = {
-  first_name?: string,
-  last_name?: string,
-  email?: string,
-  customer?: string
-}
-
 export type linkStripe = {
   account: string,
   refresh_url: string,
   return_url: string,
+}
+
+export type transfers = {
+  amount:number,
+  currency:string,
+  destination:string,
+  description:"This is a transfers from Consultaneo (ESCROW)"
 }

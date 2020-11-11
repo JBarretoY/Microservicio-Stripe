@@ -1,5 +1,5 @@
 import { getObjectStripe } from '../util/valuesUtils'
-import { accountConect, charge, customer, linkStripe, person, response, statusCode } from '../@types'
+import { accountConect, charge, customer, linkStripe, response, statusCode, transfers } from '../@types'
 
 class ManagementStripe {
   static async createCustomerStripe(customer: customer): Promise<response> {
@@ -69,16 +69,6 @@ class ManagementStripe {
     }
   }
 
-  static async createPersonFromContact(params: person): Promise<response> {
-    try {
-      const stripe = getObjectStripe()
-      const respPerson = await stripe.accounts.createPerson(params.id, params.params)
-      return (respPerson.id) ? { code: statusCode.CREATED, response: respPerson } : { code: statusCode.BAD_REQUEST,response: respPerson }
-    } catch (e) {
-      return {code:statusCode.INTERNAL_SERVER_ERROR, response: e.toString()}
-    }
-  }
-
   static async createLink(params: linkStripe): Promise<response> {
     try {
       const stripe = getObjectStripe()
@@ -89,7 +79,7 @@ class ManagementStripe {
         account: params.account
       })
 
-      return respLink.url ? { code: statusCode.ACEPTED, response: respLink } : { code: statusCode.BAD_REQUEST, response: respLink }
+      return respLink.url ? { code: statusCode.CREATED, response: respLink } : { code: statusCode.BAD_REQUEST, response: respLink }
     } catch (e) {
       return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
     }
@@ -100,6 +90,16 @@ class ManagementStripe {
       const stripe = getObjectStripe();
       const contactLists = await stripe.accounts.list();
       return contactLists.data.length > 0 ? {code: statusCode.ACEPTED,response:contactLists} : {code: statusCode.NOT_FOUND,response:'no contacts'}
+    }catch(e){
+      return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
+    }
+  }
+
+  static async makeTransferToAccount(params:transfers): Promise<response>{
+    try{
+      const stripe = getObjectStripe();
+      const resTrans = await stripe.transfers.create(params)
+      return resTrans.id ? {code:statusCode.CREATED,response:resTrans} : {code:statusCode.BAD_REQUEST,response:resTrans}
     }catch(e){
       return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
     }
