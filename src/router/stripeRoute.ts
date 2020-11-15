@@ -40,7 +40,7 @@ route.post('/create-link', async (req: Request, res: Response) => {
   return res
 })
 
-route.get('/get-contacts',async (req: Request,res: Response) => {
+route.get('/get-contacts',async (_req: Request,res: Response) => {
   const rs = await StripeService.getAllContacts()
   res.statusCode = rs.code
   res.json(rs)
