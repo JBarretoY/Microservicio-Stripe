@@ -29,6 +29,10 @@ class StripeService {
   static async makeTransferToAccount(params:transfers){
     return await ManagementStripe.makeTransferToAccount(params)
   }
+
+  static async getAllTransfers(){
+    return await ManagementStripe.getAllTransfers()
+  }
 }
 
 export default StripeService

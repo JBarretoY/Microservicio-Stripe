@@ -7,14 +7,15 @@ export type customer = {
   name: string
   email: string
   phone: string
+  source:any
 }
+
 
 export type charge = {
   amount: number
   currency: string
-  source: string
   description: string
-  customer: string
+  customer:customer
 }
 
 export type response = {

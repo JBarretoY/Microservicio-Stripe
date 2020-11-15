@@ -1,5 +1,5 @@
-import { getObjectStripe } from '../util/valuesUtils'
-import { accountConect, charge, customer, linkStripe, response, statusCode, transfers } from '../@types'
+import {getObjectStripe} from '../util/valuesUtils'
+import {accountConect, charge, customer, linkStripe, response, statusCode, transfers} from '../@types'
 
 class ManagementStripe {
   static async createCustomerStripe(customer: customer): Promise<response> {
@@ -25,10 +25,17 @@ class ManagementStripe {
   static async makePaymentStripe(charge: charge): Promise<response> {
     try {
       const stripe = getObjectStripe()
+      const customer = await stripe.customers.create({
+        email:charge.customer.email,
+        name:charge.customer.name,
+        phone:charge.customer.phone,
+        source:charge.customer.source
+      })
+
       const resp = await stripe.charges.create({
         amount: charge.amount,
         currency: charge.currency,
-        source: charge.source,
+        customer:customer.id,
         description: charge.description,
       })
 
@@ -102,6 +109,16 @@ class ManagementStripe {
       return resTrans.id ? {code:statusCode.CREATED,response:resTrans} : {code:statusCode.BAD_REQUEST,response:resTrans}
     }catch(e){
       return {code:statusCode.INTERNAL_SERVER_ERROR,response:e.toString()}
+    }
+  }
+
+  static async getAllTransfers(): Promise<response>{
+    try{
+      const stripe = getObjectStripe()
+      const transfers = await stripe.transfers.list()
+      return transfers.data.length > 0 ? {code:statusCode.ACEPTED,response:transfers} : {code:statusCode.NOT_FOUND,response:transfers}
+    }catch (e) {
+      return { code: statusCode.INTERNAL_SERVER_ERROR, response: e.toString() }
     }
   }
 }

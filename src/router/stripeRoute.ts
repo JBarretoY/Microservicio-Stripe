@@ -12,6 +12,7 @@ route.post('/create-costumer', async (req: Request, res: Response) => {
 })
 
 route.post('/create-charge', async (req: Request, res: Response) => {
+  console.log("LLEGANDP REQUEST CHARGE")
   const rs = await StripeService.makeChargeStripe(<charge>req.body)
   res.statusCode = rs.code
   res.json(rs)
@@ -47,8 +48,15 @@ route.get('/get-contacts',async (_req: Request,res: Response) => {
   return res
 })
 
-route.post('/make-transfers', async (req: Request,res: Response) => {
+route.post('/make-transfer', async (req: Request,res: Response) => {
   const rs = await StripeService.makeTransferToAccount(<transfers>req.body)
+  res.statusCode = rs.code
+  res.json(rs)
+  return res
+})
+
+route.get('/get-transfers', async (req: Request,res: Response) => {
+  const rs = await StripeService.getAllTransfers()
   res.statusCode = rs.code
   res.json(rs)
   return res

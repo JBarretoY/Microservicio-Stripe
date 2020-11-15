@@ -1,0 +1,24 @@
+POST http://localhost:9191/make-transfer
+Content-Type: application/json
+
+{
+  "amount": 200.00,
+  "currency": "usd",
+  "destination": "acct_1HgWCZGIl3d267uB",
+  "description": "This is a transfers from Consultaneo (ESCROW)"
+}
+
+###
+##GET-CONTACTS
+GET http://localhost:9191/get-contacts
+Accept: application/json
+###
+
+##GET-BALANCE
+GET http://localhost:9191/get-balance
+Accept: application/json
+
+###
+
+GET http://localhost:9191/get-transfers
+Accept: application/json
