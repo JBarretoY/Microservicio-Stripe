@@ -1,3 +1,12 @@
+POST http://localhost:9191/get-link-login-connect
+Content-Type: application/json
+Accept: application/json
+
+{
+  "account_connect": "acct_1HgWCZGIl3d267uB"
+}
+
+###
 POST http://localhost:9191/make-transfer
 Content-Type: application/json
 
@@ -19,6 +28,6 @@ GET http://localhost:9191/get-balance
 Accept: application/json
 
 ###
-
+##GET-TRANSFERS
 GET http://localhost:9191/get-transfers
 Accept: application/json

@@ -33,6 +33,10 @@ class StripeService {
   static async getAllTransfers(){
     return await ManagementStripe.getAllTransfers()
   }
+
+  static async createLinkLogin(accountConect:string){
+    return await ManagementStripe.createLinkLoginContact(accountConect)
+  }
 }
 
 export default StripeService

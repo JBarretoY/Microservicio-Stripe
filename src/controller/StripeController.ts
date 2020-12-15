@@ -39,7 +39,10 @@ class ManagementStripe {
         description: charge.description,
       })
 
-      if (resp.id) return { code: statusCode.CREATED, response: resp }
+      if (resp.id) {
+        console.dir({ code: statusCode.CREATED, response: resp })
+        return { code: statusCode.CREATED, response: resp }
+      } 
       else return { code: statusCode.BAD_REQUEST, response: resp }
     } catch (e) {
       return { code: statusCode.INTERNAL_SERVER_ERROR, response: e.toString() }
@@ -66,7 +69,10 @@ class ManagementStripe {
       const stripe = getObjectStripe()
       const respAccount = await stripe.accounts.create(params)
 
-      if (respAccount.id) return { code: statusCode.CREATED, response: respAccount }
+      if (respAccount.id) {
+        console.dir({ code: statusCode.CREATED, response: respAccount })
+        return { code: statusCode.CREATED, response: respAccount }
+      }
       return {code:statusCode.BAD_REQUEST,response: respAccount}
     } catch (e) {
       return {
@@ -117,6 +123,16 @@ class ManagementStripe {
       const stripe = getObjectStripe()
       const transfers = await stripe.transfers.list()
       return transfers.data.length > 0 ? {code:statusCode.ACEPTED,response:transfers} : {code:statusCode.NOT_FOUND,response:transfers}
+    }catch (e) {
+      return { code: statusCode.INTERNAL_SERVER_ERROR, response: e.toString() }
+    }
+  }
+
+  static async createLinkLoginContact(accountConect:string): Promise<response>{
+    try{
+      const stripe = getObjectStripe()
+      const link = await stripe.accounts.createLoginLink(accountConect)
+      return link.url ? {code:statusCode.ACEPTED,response:link} : {code:statusCode.BAD_REQUEST,response:link}
     }catch (e) {
       return { code: statusCode.INTERNAL_SERVER_ERROR, response: e.toString() }
     }

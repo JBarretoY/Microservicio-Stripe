@@ -29,7 +29,7 @@ export type errorResponse = {
 }
 
 export type accountConect = {
-  type: TYPE_ACCOUNT,
+  type: TYPE_ACCOUNT.EXPRESS,
   country: string,
   email: string,
   capabilities:capabilities

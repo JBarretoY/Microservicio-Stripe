@@ -62,5 +62,12 @@ route.get('/get-transfers', async (req: Request,res: Response) => {
   return res
 })
 
+route.post('/get-link-login-connect', async (req: Request,res: Response) => {
+  const rs = await StripeService.createLinkLogin(req.body.account_connect)
+  res.statusCode = rs.code
+  res.json(rs)
+  return res
+})
+
 
 export const routeStripe: Router = route
