@@ -12,7 +12,6 @@ route.post('/create-costumer', async (req: Request, res: Response) => {
 })
 
 route.post('/create-charge', async (req: Request, res: Response) => {
-  console.log("LLEGANDP REQUEST CHARGE")
   const rs = await StripeService.makeChargeStripe(<charge>req.body)
   res.statusCode = rs.code
   res.json(rs)
@@ -27,7 +26,6 @@ route.get('/get-balance', async (_req: Request, res: Response) => {
 })
 
 route.post('/create-contact', async (req: Request, res: Response) => {
-  console.dir(req.body)
   const rs = await StripeService.makeContactStripe(<accountConect>req.body)
   res.statusCode = rs.code
   res.json(rs)
